@@ -63,21 +63,21 @@ use proc_macro::TokenStream;
 /// `num_traits::FromPrimitive`
 #[proc_macro_derive(Primitive)]
 pub fn primitive(input: TokenStream) -> TokenStream {
-	// Construct a string representation of the type definition
-	let s = input.to_string();
+    // Construct a string representation of the type definition
+    let s = input.to_string();
 
-	// Parse the string representation
-	let ast = syn::parse_derive_input(&s).unwrap();
+    // Parse the string representation
+    let ast = syn::parse_derive_input(&s).unwrap();
 
-	// Build the impl
-	let gen = impl_primitive(&ast);
+    // Build the impl
+    let gen = impl_primitive(&ast);
 
-	// Return the generated impl
-	gen.parse().unwrap()
+    // Return the generated impl
+    gen.parse().unwrap()
 }
 
 fn impl_primitive(ast: &syn::DeriveInput) -> quote::Tokens {
-	let name = &ast.ident;
+    let name = &ast.ident;
 
     // Check if derive(Primitive) was specified for a struct
     if let syn::Body::Enum(ref variant) = ast.body {
@@ -132,8 +132,8 @@ fn impl_primitive(ast: &syn::DeriveInput) -> quote::Tokens {
                     })
                 }
             }
-		}
-	} else {
+        }
+    } else {
         panic!("#[derive(Primitive)] is only valid for C-like enums");
     }
 }
