@@ -1,0 +1,19 @@
+[package]
+name = "enum-primitive-derive"
+version = "0.1.0"
+authors = ["Doug Goldstein <cardoe@cardoe.com>"]
+license = "MIT"
+description = "enum_primitive implementation using procedural macros to have a custom derive"
+readme = "README.md"
+homepage = "https://gitlab.com/cardoe/enum-primitive-derive"
+repository = "https://gitlab.com/cardoe/enum-primitive-derive.git"
+keywords = ["derive", "enum", "fromprimitive", "primitive", "ffi"]
+categories = ["rust-patterns"]
+
+[lib]
+proc-macro = true
+
+[dependencies]
+num-traits = "^0.1"
+quote = "^0.3"
+syn = "^0.11"
