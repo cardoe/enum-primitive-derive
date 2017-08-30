@@ -34,7 +34,7 @@
 //!
 //! use num_traits::{FromPrimitive, ToPrimitive};
 //!
-//! #[derive(Primitive)]
+//! #[derive(Debug, Eq, PartialEq, Primitive)]
 //! enum Foo {
 //!     Bar = 32,
 //!     Dead = 42,
@@ -46,8 +46,12 @@
 //!     assert_eq!(Foo::from_i32(42), Some(Foo::Dead));
 //!     assert_eq!(Foo::from_i64(50), Some(Foo::Beef));
 //!     assert_eq!(Foo::from_isize(17), None);
-//!     assert_eq!(Foo::Bar::to_i32(), Some(32));
-//!     assert_eq!(Foo::Dead::to_isize(), Some(42));
+//!
+//!     let bar = Foo::Bar;
+//!     assert_eq!(bar.to_i32(), Some(32));
+//!
+//!     let dead = Foo::Dead;
+//!     assert_eq!(dead.to_isize(), Some(42));
 //! }
 //! ```
 
@@ -99,6 +103,13 @@ fn impl_primitive(ast: &syn::DeriveInput) -> quote::Tokens {
         let enum_i64 = enum_u64.clone();
 
         let to_name = name.clone();
+        let to_enum_u64 = enum_u64.clone();
+        let to_var_u64 = var_u64.clone();
+        let to_dis_u64 = dis_u64.clone();
+
+        let to_enum_i64 = enum_u64.clone();
+        let to_var_i64 = var_u64.clone();
+        let to_dis_i64 = dis_u64.clone();
 
         quote! {
             extern crate core;
@@ -121,15 +132,15 @@ fn impl_primitive(ast: &syn::DeriveInput) -> quote::Tokens {
 
             impl ::num_traits::ToPrimitive for #to_name {
                 fn to_u64(&self) -> Option<u64> {
-                    Some(unsafe {
-                        ::core::mem::transmute_copy::<Self, u64>(self)
-                    })
+                    match *self {
+                        #( #to_enum_u64::#to_var_u64 => Some(#to_dis_u64), )*
+                    }
                 }
 
                 fn to_i64(&self) -> Option<i64> {
-                    Some(unsafe {
-                        ::core::mem::transmute_copy::<Self, i64>(self)
-                    })
+                    match *self {
+                        #( #to_enum_i64::#to_var_i64 => Some(#to_dis_i64), )*
+                    }
                 }
             }
         }
