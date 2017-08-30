@@ -60,7 +60,11 @@ fn main() {
     assert_eq!(Foo::from_i32(42), Some(Foo::Dead));
     assert_eq!(Foo::from_i64(50), Some(Foo::Beef));
     assert_eq!(Foo::from_isize(17), None);
-    assert_eq!(Foo::Bar::to_i32(), Some(32));
-    assert_eq!(Foo::Dead::to_isize(), Some(42));
+
+    let bar = Foo::Bar;
+    assert_eq!(bar.to_i32(), Some(32));
+
+    let dead = Foo::Dead;
+    assert_eq!(dead.to_isize(), Some(42));
 }
 ```
