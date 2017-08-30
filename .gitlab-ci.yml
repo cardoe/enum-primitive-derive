@@ -1,0 +1,29 @@
+stages:
+    - build
+
+build-1_15:
+    stage: build
+    image: scorpil/rust:1.15.1
+    dependencies: []
+    script:
+        - cargo build --verbose
+        - cargo test --verbose
+        - cargo doc --verbose
+
+build-beta:
+    stage: build
+    image: scorpil/rust:beta
+    dependencies: []
+    script:
+        - cargo build --verbose
+        - cargo test --verbose
+        - cargo doc --verbose
+
+build-nightly:
+    stage: build
+    image: scorpil/rust:nightly
+    dependencies: []
+    script:
+        - cargo build --verbose
+        - cargo test --verbose
+        - cargo doc --verbose

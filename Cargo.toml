@@ -10,6 +10,9 @@ repository = "https://gitlab.com/cardoe/enum-primitive-derive.git"
 keywords = ["derive", "enum", "fromprimitive", "primitive", "ffi"]
 categories = ["rust-patterns"]
 
+[badges]
+gitlab = { repository = "cardoe/enum-primitive-derive" }
+
 [lib]
 proc-macro = true
 
