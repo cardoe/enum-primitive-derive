@@ -1,6 +1,6 @@
 [package]
 name = "enum-primitive-derive"
-version = "0.1.2"
+version = "0.1.3-pre"
 authors = ["Doug Goldstein <cardoe@cardoe.com>"]
 license = "MIT"
 description = "enum_primitive implementation using procedural macros to have a custom derive"
