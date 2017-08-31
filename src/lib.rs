@@ -87,6 +87,9 @@ fn impl_primitive(ast: &syn::DeriveInput) -> quote::Tokens {
     if let syn::Body::Enum(ref variant) = ast.body {
 
         let (var_u64, dis_u64): (Vec<_>, Vec<_>) = variant.iter().map(|v| {
+            if v.data != syn::VariantData::Unit {
+                panic!("#[derive(Primitive) can only operate on C-like enums");
+            }
             if v.discriminant.is_none() {
                 panic!("#[derive(Primitive) requires C-like enums with \
                        discriminants for all enum variants");
