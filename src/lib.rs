@@ -150,8 +150,6 @@ fn impl_primitive(ast: &syn::DeriveInput) -> quote::Tokens {
         let to_dis_i64 = dis_u64.clone();
 
         quote! {
-            extern crate core;
-
             impl ::num_traits::FromPrimitive for #name {
                 fn from_u64(val: u64) -> Option<Self> {
                     match val as _ {
