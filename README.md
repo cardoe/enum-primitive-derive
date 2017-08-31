@@ -68,3 +68,36 @@ fn main() {
     assert_eq!(dead.to_isize(), Some(42));
 }
 ```
+
+# Complex Example
+
+In this case we attempt to use values created by
+[bindgen](https://crates.io/crates/bindgen).
+
+```rust
+#[macro_use]
+extern crate enum_primitive_derive;
+extern crate num_traits;
+
+use num_traits::{FromPrimitive, ToPrimitive};
+
+pub const ABC: ::std::os::raw::c_uint = 1;
+pub const DEF: ::std::os::raw::c_uint = 2;
+pub const GHI: ::std::os::raw::c_uint = 4;
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Primitive)]
+enum BindGenLike {
+    ABC = ABC as isize,
+    DEF = DEF as isize,
+    GHI = GHI as isize,
+}
+
+fn main() {
+    assert_eq!(BindGenLike::from_isize(4), Some(BindGenLike::GHI));
+    assert_eq!(BindGenLike::from_u32(2), Some(BindGenLike::DEF));
+    assert_eq!(BindGenLike::from_u32(8), None);
+
+    let abc = BindGenLike::ABC;
+    assert_eq!(abc.to_u32(), Some(1));
+}
+```

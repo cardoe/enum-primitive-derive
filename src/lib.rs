@@ -54,6 +54,36 @@
 //!     assert_eq!(dead.to_isize(), Some(42));
 //! }
 //! ```
+//!
+//! # Complex Example
+//!
+//! ```rust
+//! #[macro_use]
+//! extern crate enum_primitive_derive;
+//! extern crate num_traits;
+//!
+//! use num_traits::{FromPrimitive, ToPrimitive};
+//!
+//! pub const ABC: ::std::os::raw::c_uint = 1;
+//! pub const DEF: ::std::os::raw::c_uint = 2;
+//! pub const GHI: ::std::os::raw::c_uint = 4;
+//!
+//! #[derive(Clone, Copy, Debug, Eq, PartialEq, Primitive)]
+//! enum BindGenLike {
+//!     ABC = ABC as isize,
+//!     DEF = DEF as isize,
+//!     GHI = GHI as isize,
+//! }
+//!
+//! fn main() {
+//!     assert_eq!(BindGenLike::from_isize(4), Some(BindGenLike::GHI));
+//!     assert_eq!(BindGenLike::from_u32(2), Some(BindGenLike::DEF));
+//!     assert_eq!(BindGenLike::from_u32(8), None);
+//!
+//!     let abc = BindGenLike::ABC;
+//!     assert_eq!(abc.to_u32(), Some(1));
+//! }
+//! ```
 
 extern crate proc_macro;
 extern crate num_traits;
@@ -94,7 +124,12 @@ fn impl_primitive(ast: &syn::DeriveInput) -> quote::Tokens {
                 panic!("#[derive(Primitive) requires C-like enums with \
                        discriminants for all enum variants");
             }
-            (v.ident.clone(), v.discriminant.clone().unwrap())
+
+            let discrim = match v.discriminant.clone().unwrap() {
+                syn::ConstExpr::Cast(real, _) => *real,
+                orig => orig,
+            };
+            (v.ident.clone(), discrim)
         }).unzip();
 
         // quote!{} needs this to be a vec since its in #( )*
@@ -119,14 +154,14 @@ fn impl_primitive(ast: &syn::DeriveInput) -> quote::Tokens {
 
             impl ::num_traits::FromPrimitive for #name {
                 fn from_u64(val: u64) -> Option<Self> {
-                    match val {
+                    match val as _ {
                         #( #dis_u64 => Some(#enum_u64::#var_u64), )*
                         _ => None,
                     }
                 }
 
                 fn from_i64(val: i64) -> Option<Self> {
-                    match val {
+                    match val as _ {
                         #( #dis_i64 => Some(#enum_i64::#var_i64), )*
                         _ => None,
                     }
@@ -136,13 +171,13 @@ fn impl_primitive(ast: &syn::DeriveInput) -> quote::Tokens {
             impl ::num_traits::ToPrimitive for #to_name {
                 fn to_u64(&self) -> Option<u64> {
                     match *self {
-                        #( #to_enum_u64::#to_var_u64 => Some(#to_dis_u64), )*
+                        #( #to_enum_u64::#to_var_u64 => Some(#to_dis_u64 as u64), )*
                     }
                 }
 
                 fn to_i64(&self) -> Option<i64> {
                     match *self {
-                        #( #to_enum_i64::#to_var_i64 => Some(#to_dis_i64), )*
+                        #( #to_enum_i64::#to_var_i64 => Some(#to_dis_i64 as i64), )*
                     }
                 }
             }
