@@ -1,11 +1,16 @@
-# enum-primitive-derive
+[![Build status](https://gitlab.com/cardoe/enum-primitive-derive/badges/master/pipeline.svg)](https://gitlab.com/cardoe/enum-primitive-derive/commits/master)
+[![Rust version]( https://img.shields.io/badge/rust-1.15+-blue.svg)]()
+[![Documentation](https://docs.rs/enum-primitive-derive/badge.svg)](https://docs.rs/enum-primitive-derive)
+[![Latest version](https://img.shields.io/crates/v/enum-primitive-derive.svg)](https://crates.io/crates/enum-primitive-derive)
+[![All downloads](https://img.shields.io/crates/d/enum-primitive-derive.svg)](https://crates.io/crates/enum-primitive-derive)
+[![Downloads of latest version](https://img.shields.io/crates/dv/enum-primitive-derive.svg)](https://crates.io/crates/enum-primitive-derive)
 
 This is a custom derive, using procedural macros, implementation of
 [enum_primitive](https://crates.io/crates/enum_primitive).
 
 ## Documentation
 
-https:/docs.rs/enum-primitive-derive/
+[https:/docs.rs/enum-primitive-derive/](https://docs.rs/enum-primitive-derive/)
 
 ## Usage
 
