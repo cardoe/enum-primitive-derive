@@ -10,7 +10,7 @@ This is a custom derive, using procedural macros, implementation of
 
 ## Documentation
 
-[https:/docs.rs/enum-primitive-derive/](https://docs.rs/enum-primitive-derive/)
+[https://docs.rs/enum-primitive-derive/](https://docs.rs/enum-primitive-derive/)
 
 ## Usage
 
