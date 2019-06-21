@@ -1,9 +1,9 @@
 stages:
     - build
 
-build-1_15:
+build-1_32:
     stage: build
-    image: scorpil/rust:1.15.1
+    image: rust:1.32-slim
     dependencies: []
     script:
         - cargo build --verbose
@@ -12,8 +12,10 @@ build-1_15:
 
 build-beta:
     stage: build
-    image: scorpil/rust:beta
+    image: rust:latest
     dependencies: []
+    before_script:
+        - rustup default beta
     script:
         - cargo build --verbose
         - cargo test --verbose
@@ -21,8 +23,10 @@ build-beta:
 
 build-nightly:
     stage: build
-    image: scorpil/rust:nightly
+    image: rust:latest
     dependencies: []
+    before_script:
+        - rustup default nightly
     script:
         - cargo build --verbose
         - cargo test --verbose
