@@ -85,7 +85,6 @@
 //! }
 //! ```
 
-extern crate num_traits;
 extern crate proc_macro;
 #[macro_use]
 extern crate quote;

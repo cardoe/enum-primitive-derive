@@ -18,6 +18,8 @@ gitlab = { repository = "cardoe/enum-primitive-derive" }
 proc-macro = true
 
 [dependencies]
-num-traits = "0.2"
 quote = "1"
 syn = "1"
+
+[dev-dependencies]
+num-traits = "0.2"
