@@ -28,10 +28,7 @@
 //! # Example
 //!
 //! ```rust
-//! #[macro_use]
-//! extern crate enum_primitive_derive;
-//! extern crate num_traits;
-//!
+//! use enum_primitive_derive::Primitive;
 //! use num_traits::{FromPrimitive, ToPrimitive};
 //!
 //! #[derive(Debug, Eq, PartialEq, Primitive)]
@@ -58,10 +55,7 @@
 //! # Complex Example
 //!
 //! ```rust
-//! #[macro_use]
-//! extern crate enum_primitive_derive;
-//! extern crate num_traits;
-//!
+//! use enum_primitive_derive::Primitive;
 //! use num_traits::{FromPrimitive, ToPrimitive};
 //!
 //! pub const ABC: ::std::os::raw::c_uint = 1;
@@ -86,10 +80,6 @@
 //! ```
 
 extern crate proc_macro;
-#[macro_use]
-extern crate quote;
-#[macro_use]
-extern crate syn;
 
 use proc_macro::TokenStream;
 
@@ -97,7 +87,7 @@ use proc_macro::TokenStream;
 /// `num_traits::FromPrimitive`
 #[proc_macro_derive(Primitive)]
 pub fn primitive(input: TokenStream) -> TokenStream {
-    let ast = parse_macro_input!(input as syn::DeriveInput);
+    let ast = syn::parse_macro_input!(input as syn::DeriveInput);
     impl_primitive(&ast)
 }
 
@@ -146,7 +136,7 @@ fn impl_primitive(ast: &syn::DeriveInput) -> TokenStream {
         let to_var_i64 = var_u64.clone();
         let to_dis_i64 = dis_u64.clone();
 
-        TokenStream::from(quote! {
+        TokenStream::from(quote::quote! {
             impl ::num_traits::FromPrimitive for #name {
                 fn from_u64(val: u64) -> Option<Self> {
                     match val as _ {
