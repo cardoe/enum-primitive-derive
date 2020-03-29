@@ -89,6 +89,7 @@ extern crate proc_macro;
 extern crate num_traits;
 #[macro_use]
 extern crate quote;
+#[macro_use]
 extern crate syn;
 
 use proc_macro::TokenStream;
@@ -97,43 +98,35 @@ use proc_macro::TokenStream;
 /// `num_traits::FromPrimitive`
 #[proc_macro_derive(Primitive)]
 pub fn primitive(input: TokenStream) -> TokenStream {
-    // Construct a string representation of the type definition
-    let s = input.to_string();
-
-    // Parse the string representation
-    let ast = syn::parse_derive_input(&s).unwrap();
-
-    // Build the impl
-    let gen = impl_primitive(&ast);
-
-    // Return the generated impl
-    gen.parse().unwrap()
+    let ast = parse_macro_input!(input as syn::DeriveInput);
+    impl_primitive(&ast)
 }
 
-fn impl_primitive(ast: &syn::DeriveInput) -> quote::Tokens {
+fn impl_primitive(ast: &syn::DeriveInput) -> TokenStream {
     let name = &ast.ident;
 
     // Check if derive(Primitive) was specified for a struct
-    if let syn::Body::Enum(ref variant) = ast.body {
+    if let syn::Data::Enum(ref variant) = ast.data {
 
-        let (var_u64, dis_u64): (Vec<_>, Vec<_>) = variant.iter().map(|v| {
-            if v.data != syn::VariantData::Unit {
-                panic!("#[derive(Primitive) can only operate on C-like enums");
+        let (var_u64, dis_u64): (Vec<_>, Vec<_>) = variant.variants.iter().map(|v| {
+            match v.fields {
+                syn::Fields::Unit => (),
+                _ => panic!("#[derive(Primitive) can only operate on C-like enums"),
             }
             if v.discriminant.is_none() {
                 panic!("#[derive(Primitive) requires C-like enums with \
                        discriminants for all enum variants");
             }
 
-            let discrim = match v.discriminant.clone().unwrap() {
-                syn::ConstExpr::Cast(real, _) => *real,
+            let discrim = match v.discriminant.clone().map(|(_eq, expr)| expr).unwrap() {
+                syn::Expr::Cast(real) => *real.expr,
                 orig => orig,
             };
             (v.ident.clone(), discrim)
         }).unzip();
 
         // quote!{} needs this to be a vec since its in #( )*
-        let enum_u64 = vec![name.clone(); variant.len()];
+        let enum_u64 = vec![name.clone(); variant.variants.len()];
 
         // can't reuse variables in quote!{} body
         let var_i64 = var_u64.clone();
@@ -149,7 +142,7 @@ fn impl_primitive(ast: &syn::DeriveInput) -> quote::Tokens {
         let to_var_i64 = var_u64.clone();
         let to_dis_i64 = dis_u64.clone();
 
-        quote! {
+        TokenStream::from(quote! {
             impl ::num_traits::FromPrimitive for #name {
                 fn from_u64(val: u64) -> Option<Self> {
                     match val as _ {
@@ -179,7 +172,7 @@ fn impl_primitive(ast: &syn::DeriveInput) -> quote::Tokens {
                     }
                 }
             }
-        }
+        })
     } else {
         panic!("#[derive(Primitive)] is only valid for C-like enums");
     }
