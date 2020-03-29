@@ -1,5 +1,11 @@
 # ChangeLog
 
+## Unreleased
+
+### Changed
+
+- Upgrade [syn](https://crates.io/crates/syn) and [quote](https://crates.io/crates/quote) to 1.0
+
 ## 0.1.2
 
 ### Changed
