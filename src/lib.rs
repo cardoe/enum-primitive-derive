@@ -107,23 +107,28 @@ fn impl_primitive(ast: &syn::DeriveInput) -> TokenStream {
 
     // Check if derive(Primitive) was specified for a struct
     if let syn::Data::Enum(ref variant) = ast.data {
+        let (var_u64, dis_u64): (Vec<_>, Vec<_>) = variant
+            .variants
+            .iter()
+            .map(|v| {
+                match v.fields {
+                    syn::Fields::Unit => (),
+                    _ => panic!("#[derive(Primitive) can only operate on C-like enums"),
+                }
+                if v.discriminant.is_none() {
+                    panic!(
+                        "#[derive(Primitive) requires C-like enums with \
+                       discriminants for all enum variants"
+                    );
+                }
 
-        let (var_u64, dis_u64): (Vec<_>, Vec<_>) = variant.variants.iter().map(|v| {
-            match v.fields {
-                syn::Fields::Unit => (),
-                _ => panic!("#[derive(Primitive) can only operate on C-like enums"),
-            }
-            if v.discriminant.is_none() {
-                panic!("#[derive(Primitive) requires C-like enums with \
-                       discriminants for all enum variants");
-            }
-
-            let discrim = match v.discriminant.clone().map(|(_eq, expr)| expr).unwrap() {
-                syn::Expr::Cast(real) => *real.expr,
-                orig => orig,
-            };
-            (v.ident.clone(), discrim)
-        }).unzip();
+                let discrim = match v.discriminant.clone().map(|(_eq, expr)| expr).unwrap() {
+                    syn::Expr::Cast(real) => *real.expr,
+                    orig => orig,
+                };
+                (v.ident.clone(), discrim)
+            })
+            .unzip();
 
         // quote!{} needs this to be a vec since its in #( )*
         let enum_u64 = vec![name.clone(); variant.variants.len()];
