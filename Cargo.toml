@@ -9,7 +9,6 @@ homepage = "https://gitlab.com/cardoe/enum-primitive-derive"
 repository = "https://gitlab.com/cardoe/enum-primitive-derive.git"
 keywords = ["derive", "enum", "fromprimitive", "primitive", "ffi"]
 categories = ["rust-patterns"]
-changelog = "CHANGELOG.md"
 edition = "2018"
 
 [badges]
