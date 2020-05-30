@@ -10,6 +10,15 @@ build-1_32:
         - cargo test --verbose
         - cargo doc --verbose
 
+build-stable:
+    stage: build
+    image: rust:latest
+    dependencies: []
+    script:
+        - cargo build --verbose
+        - cargo test --verbose
+        - cargo doc --verbose
+
 build-beta:
     stage: build
     image: rust:latest
