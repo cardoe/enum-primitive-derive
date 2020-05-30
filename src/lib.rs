@@ -78,6 +78,31 @@
 //!     assert_eq!(abc.to_u32(), Some(1));
 //! }
 //! ```
+//!
+//! # TryFrom Example
+//!
+//! ```rust
+//! use enum_primitive_derive::Primitive;
+//! use std::convert::TryFrom;
+//!
+//! #[derive(Debug, Eq, PartialEq, Primitive)]
+//! enum Foo {
+//!     Bar = 32,
+//!     Dead = 42,
+//!     Beef = 50,
+//! }
+//!
+//! fn main() {
+//!     let bar = Foo::try_from(32);
+//!     assert_eq!(bar, Ok(Foo::Bar));
+//!
+//!     let dead = Foo::try_from(42);
+//!     assert_eq!(dead, Ok(Foo::Dead));
+//!
+//!     let unknown = Foo::try_from(12);
+//!     assert!(unknown.is_err());
+//! }
+//! ```
 
 extern crate proc_macro;
 
@@ -164,6 +189,86 @@ fn impl_primitive(ast: &syn::DeriveInput) -> TokenStream {
                     match *self {
                         #( #to_enum_i64::#to_var_i64 => Some(#to_dis_i64 as i64), )*
                     }
+                }
+            }
+
+            impl ::std::convert::TryFrom<u64> for #to_name {
+                type Error = &'static str;
+
+                fn try_from(value: u64) -> Result<Self, Self::Error> {
+                    use ::num_traits::FromPrimitive;
+
+                    #to_name::from_u64(value).ok_or_else(|| "Unknown variant")
+                }
+            }
+
+            impl ::std::convert::TryFrom<u32> for #to_name {
+                type Error = &'static str;
+
+                fn try_from(value: u32) -> Result<Self, Self::Error> {
+                    use ::num_traits::FromPrimitive;
+
+                    #to_name::from_u32(value).ok_or_else(|| "Unknown variant")
+                }
+            }
+
+            impl ::std::convert::TryFrom<u16> for #to_name {
+                type Error = &'static str;
+
+                fn try_from(value: u16) -> Result<Self, Self::Error> {
+                    use ::num_traits::FromPrimitive;
+
+                    #to_name::from_u16(value).ok_or_else(|| "Unknown variant")
+                }
+            }
+
+            impl ::std::convert::TryFrom<u8> for #to_name {
+                type Error = &'static str;
+
+                fn try_from(value: u8) -> Result<Self, Self::Error> {
+                    use ::num_traits::FromPrimitive;
+
+                    #to_name::from_u8(value).ok_or_else(|| "Unknown variant")
+                }
+            }
+
+            impl ::std::convert::TryFrom<i64> for #name {
+                type Error = &'static str;
+
+                fn try_from(value: i64) -> Result<Self, Self::Error> {
+                    use ::num_traits::FromPrimitive;
+
+                    #to_name::from_i64(value).ok_or_else(|| "Unknown variant")
+                }
+            }
+
+            impl ::std::convert::TryFrom<i32> for #name {
+                type Error = &'static str;
+
+                fn try_from(value: i32) -> Result<Self, Self::Error> {
+                    use ::num_traits::FromPrimitive;
+
+                    #to_name::from_i32(value).ok_or_else(|| "Unknown variant")
+                }
+            }
+
+            impl ::std::convert::TryFrom<i16> for #name {
+                type Error = &'static str;
+
+                fn try_from(value: i16) -> Result<Self, Self::Error> {
+                    use ::num_traits::FromPrimitive;
+
+                    #to_name::from_i16(value).ok_or_else(|| "Unknown variant")
+                }
+            }
+
+            impl ::std::convert::TryFrom<i8> for #name {
+                type Error = &'static str;
+
+                fn try_from(value: i8) -> Result<Self, Self::Error> {
+                    use ::num_traits::FromPrimitive;
+
+                    #to_name::from_i8(value).ok_or_else(|| "Unknown variant")
                 }
             }
         })

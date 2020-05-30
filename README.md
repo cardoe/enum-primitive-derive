@@ -1,5 +1,5 @@
 [![Build status](https://gitlab.com/cardoe/enum-primitive-derive/badges/master/pipeline.svg)](https://gitlab.com/cardoe/enum-primitive-derive/commits/master)
-[![Rust version]( https://img.shields.io/badge/rust-1.15+-blue.svg)]()
+[![Rust version]( https://img.shields.io/badge/rust-1.34+-blue.svg)]()
 [![Documentation](https://docs.rs/enum-primitive-derive/badge.svg)](https://docs.rs/enum-primitive-derive)
 [![Latest version](https://img.shields.io/crates/v/enum-primitive-derive.svg)](https://crates.io/crates/enum-primitive-derive)
 [![All downloads](https://img.shields.io/crates/d/enum-primitive-derive.svg)](https://crates.io/crates/enum-primitive-derive)
@@ -7,6 +7,8 @@
 
 This is a custom derive, using procedural macros, implementation of
 [enum_primitive](https://crates.io/crates/enum_primitive).
+
+MSRV is 1.34.0
 
 ## Documentation
 

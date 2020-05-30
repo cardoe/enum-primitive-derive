@@ -1,6 +1,10 @@
 # ChangeLog
 
-## 0.2.0
+## 0.2.1
+### Added
+- support TryFrom
+
+## 0.2.0 (yanked)
 ### Changed
 - Upgrade [syn](https://crates.io/crates/syn) and [quote](https://crates.io/crates/quote) to 1.0
 - add a better diagnostic for the case where a discriminant isn't specified for

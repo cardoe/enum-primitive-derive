@@ -1,9 +1,9 @@
 stages:
     - build
 
-build-1_32:
+build-1_34:
     stage: build
-    image: rust:1.32-slim
+    image: rust:1.34-slim
     dependencies: []
     script:
         - cargo build --verbose
