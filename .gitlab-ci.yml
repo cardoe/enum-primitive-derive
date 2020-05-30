@@ -28,6 +28,7 @@ build-nightly:
     before_script:
         - rustup default nightly
     script:
-        - cargo build --verbose
-        - cargo test --verbose
-        - cargo doc --verbose
+        - cargo generate-lockfile -Z minimal-versions
+        - cargo build --verbose --locked
+        - cargo test --verbose --locked
+        - cargo doc --verbose --locked
