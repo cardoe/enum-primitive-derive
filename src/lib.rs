@@ -83,7 +83,7 @@
 //!
 //! ```rust
 //! use enum_primitive_derive::Primitive;
-//! use std::convert::TryFrom;
+//! use core::convert::TryFrom;
 //!
 //! #[derive(Debug, Eq, PartialEq, Primitive)]
 //! enum Foo {
@@ -192,7 +192,7 @@ fn impl_primitive(ast: &syn::DeriveInput) -> TokenStream {
                 }
             }
 
-            impl ::std::convert::TryFrom<u64> for #to_name {
+            impl ::core::convert::TryFrom<u64> for #to_name {
                 type Error = &'static str;
 
                 fn try_from(value: u64) -> Result<Self, Self::Error> {
@@ -202,7 +202,7 @@ fn impl_primitive(ast: &syn::DeriveInput) -> TokenStream {
                 }
             }
 
-            impl ::std::convert::TryFrom<u32> for #to_name {
+            impl ::core::convert::TryFrom<u32> for #to_name {
                 type Error = &'static str;
 
                 fn try_from(value: u32) -> Result<Self, Self::Error> {
@@ -212,7 +212,7 @@ fn impl_primitive(ast: &syn::DeriveInput) -> TokenStream {
                 }
             }
 
-            impl ::std::convert::TryFrom<u16> for #to_name {
+            impl ::core::convert::TryFrom<u16> for #to_name {
                 type Error = &'static str;
 
                 fn try_from(value: u16) -> Result<Self, Self::Error> {
@@ -222,7 +222,7 @@ fn impl_primitive(ast: &syn::DeriveInput) -> TokenStream {
                 }
             }
 
-            impl ::std::convert::TryFrom<u8> for #to_name {
+            impl ::core::convert::TryFrom<u8> for #to_name {
                 type Error = &'static str;
 
                 fn try_from(value: u8) -> Result<Self, Self::Error> {
@@ -232,7 +232,7 @@ fn impl_primitive(ast: &syn::DeriveInput) -> TokenStream {
                 }
             }
 
-            impl ::std::convert::TryFrom<i64> for #name {
+            impl ::core::convert::TryFrom<i64> for #name {
                 type Error = &'static str;
 
                 fn try_from(value: i64) -> Result<Self, Self::Error> {
@@ -242,7 +242,7 @@ fn impl_primitive(ast: &syn::DeriveInput) -> TokenStream {
                 }
             }
 
-            impl ::std::convert::TryFrom<i32> for #name {
+            impl ::core::convert::TryFrom<i32> for #name {
                 type Error = &'static str;
 
                 fn try_from(value: i32) -> Result<Self, Self::Error> {
@@ -252,7 +252,7 @@ fn impl_primitive(ast: &syn::DeriveInput) -> TokenStream {
                 }
             }
 
-            impl ::std::convert::TryFrom<i16> for #name {
+            impl ::core::convert::TryFrom<i16> for #name {
                 type Error = &'static str;
 
                 fn try_from(value: i16) -> Result<Self, Self::Error> {
@@ -262,7 +262,7 @@ fn impl_primitive(ast: &syn::DeriveInput) -> TokenStream {
                 }
             }
 
-            impl ::std::convert::TryFrom<i8> for #name {
+            impl ::core::convert::TryFrom<i8> for #name {
                 type Error = &'static str;
 
                 fn try_from(value: i8) -> Result<Self, Self::Error> {
